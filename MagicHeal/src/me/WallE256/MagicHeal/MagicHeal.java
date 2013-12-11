@@ -22,9 +22,6 @@ public class MagicHeal extends JavaPlugin {
 	public static MagicHeal plugin;
 	public int i;
 	public Random rand;
-	public static Economy econ = null;
-    public static Permission perms = null;
-    public static Chat chat = null;
 	@Override
 	public void onDisable(){
 		PluginDescriptionFile pdfFile = this.getDescription();
@@ -39,32 +36,40 @@ public class MagicHeal extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
+		setupEconomy();
         setupPermissions();
 	}
-	private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
+	public static Permission permission = null;
+    public static Economy economy = null;
+    public static Chat chat = null;
+
+    private boolean setupPermissions()
+    {
+        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        if (permissionProvider != null) {
+            permission = permissionProvider.getProvider();
         }
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
+        return (permission != null);
+    }
+    private boolean setupEconomy()
+    {
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (economyProvider != null) {
+            economy = economyProvider.getProvider();
         }
-        econ = rsp.getProvider();
-        return econ != null;
-	}
-    private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        perms = rsp.getProvider();
-        return perms != null;
+
+        return (economy != null);
     }
 	public boolean onCommand(CommandSender sender, Command cmd, String CommandLabel, String[] args){
 		Player player= (Player) sender;
+		economy.createPlayerAccount(player.getName());
 		if(CommandLabel.equalsIgnoreCase("heal")  || CommandLabel.equalsIgnoreCase("h")){
 			if(args.length == 0){ 
 				//rand = new Random();
-				if(((Economy) player).bankHas(player.getName(),100) != null)
+				
+				if(economy.getBalance(player.getName())>=100)
 				{
-					((Economy) player).bankWithdraw(player.getName(),100);
+					economy.bankWithdraw(player.getName(),100);
 				player.setHealth(20);
 				player.setFireTicks(0);
 				player.setFoodLevel(20);
@@ -79,9 +84,9 @@ public class MagicHeal extends JavaPlugin {
 			else if(args.length == 1){
 				if(player.getServer().getPlayer(args[0]) != null)
 					{
-					if(((Economy) player).bankHas(player.getName(),100) != null)
+					if(economy.getBalance(player.getName())>=100)
 					{
-						((Economy) player).bankWithdraw(player.getName(),100);
+						economy.bankWithdraw(player.getName()  ,100);
 					Player targetPlayer = player.getServer().getPlayer(args[0]);
 						targetPlayer.setHealth(20);
 						targetPlayer.setFireTicks(0);
@@ -104,9 +109,9 @@ public class MagicHeal extends JavaPlugin {
 		{
 			if(args.length == 0)
 			{
-				if(((Economy) player).bankHas(player.getName(),100) != null)
+				if(economy.getBalance(player.getName())>=200)
 				{
-					((Economy) player).bankWithdraw(player.getName(),100);
+					economy.bankWithdraw(player.getName(),200);
 				//rand = new Random();
 				player.setHealth(20);
 				player.setFireTicks(0);
@@ -122,9 +127,9 @@ public class MagicHeal extends JavaPlugin {
 			else
 				if(args.length == 1)
 				{
-					if(((Economy) player).bankHas(player.getName(),100) != null)
+					if(economy.getBalance(player.getName())>=200)
 					{
-						((Economy) player).bankWithdraw(player.getName(),100);
+						economy.bankWithdraw(player.getName(),200);
 					Player targetPlayer = player.getServer().getPlayer(args[0]);
 					targetPlayer.setHealth(20);
 					targetPlayer.setFireTicks(0);
