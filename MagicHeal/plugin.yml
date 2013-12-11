@@ -1,6 +1,8 @@
 name: MagicHeal
 main: me.WallE256.MagicHeal.MagicHeal
 version: 1.0
+softdepend: [Vault]
+depend: [Vault]
 description: >
              MagicHeal plugin.
 commands:
