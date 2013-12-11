@@ -1,0 +1,15 @@
+name: MagicHeal
+main: me.WallE256.MagicHeal.MagicHeal
+version: 1.0
+description: >
+             MagicHeal plugin.
+commands:
+  heal:
+    description: Just Heal
+  mh:
+    descriprion: Just Heal
+  magicheal:
+    description: Just Heal
+  h:
+    description: Just Heal
+  
