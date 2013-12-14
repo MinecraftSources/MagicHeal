@@ -25,7 +25,7 @@ public class MagicHeal extends JavaPlugin {
 	@Override
 	public void onDisable(){
 		PluginDescriptionFile pdfFile = this.getDescription();
-		this.logger.info(pdfFile.getName() + " Has Been Disabled");
+		this.logger.info(pdfFile.getName() + " Has Been Disabled Made By WallE256");
 	}
 	@Override
 	public void onEnable(){
