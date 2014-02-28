@@ -1,6 +1,6 @@
 package me.WallE256.MagicHeal;
 
-import java.util.Random;
+// import java.util.Random;
 import java.util.logging.Logger;
 
 import net.milkbowl.vault.chat.Chat;
@@ -21,7 +21,7 @@ public class MagicHeal extends JavaPlugin {
 	public final Logger logger = Logger.getLogger("Minecraft");
 	public static MagicHeal plugin;
 	public int i;
-	public Random rand;
+	// public Random rand;
 
 	@Override
 	public void onDisable() {
